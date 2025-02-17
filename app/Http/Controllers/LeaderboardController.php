@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Leaderboard;
 use App\Models\User;
-use App\Models\Activity;
 use Carbon\Carbon;
 
 class LeaderboardController extends Controller
 {
+    /**
+     * Show Board Data with filters
+     */
     public function index(Request $request)
     {
         $query = Leaderboard::with('user')->orderBy('rank');
@@ -36,6 +38,9 @@ class LeaderboardController extends Controller
         return view('leaderboard', ['leaderboard' => $query->get()]);
     }
 
+    /** 
+     * Recalculate Board Data
+     */
     public function recalculate()
     {
         $leaderboardEntries = User::with('activities')->get()->map(function ($user) {
